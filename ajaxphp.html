@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax PHP</title>
+</head>
+<body>
+    <button id="loadBtn">Get Name</button>
+    <h2>GET Form</h2>
+    <form id="getForm">
+        <input type="text" name="name" id="name1">
+        <input type="submit">
+    </form>
+
+    <h2>POST Form</h2>
+    <form id="postForm">
+        <input type="text" name="name" id="name2">
+        <input type="submit">
+    </form>
+
+    <h2>All Users</h2>
+    <button id="totalUsers">List of All Users</button>
+    <div id="totalu"></div>
+    <script>
+        document.getElementById('loadBtn').addEventListener('click',getName);
+        document.getElementById('postForm').addEventListener('submit',postName);
+        document.getElementById('totalUsers').addEventListener('click',allUsersList)
+        function getName(e){
+            e.preventDefault();
+            let xhr = new XMLHttpRequest();
+            let name = document.getElementById('name1').value;
+            xhr.open('GET','process.php?name='+ name,true);
+            xhr.onload = function(){
+                console.log(xhr.responseText)
+
+            }
+            xhr.send();
+        }
+
+        function postName(e){
+            e.preventDefault();
+            console.log('in post form')
+            let name = document.getElementById('name2').value;
+            let params = "name="+name;
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST','process.php',true);
+            xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+            xhr.onload = function(){
+                console.log(xhr.responseText)
+                if(this.status == 200){
+                }
+            }
+            xhr.send(params);
+        }
+
+
+        function allUsersList(){
+            console.log('in method')
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET','users.php', true);
+            xhr.onload = function(){
+                if(this.status == 200){
+                    let users = JSON.parse(this.responseText)
+                    console.log(users)
+                    let outPut = '';
+                    for(let i in users){
+                    outPut += `<ul>` +
+                    `<li> ID : `+ users[i].id +`</li>` +
+                    `<li> Name : `+ users[i].name +`</li>` +
+                    `</ul>`
+                    }
+                    document.getElementById('totalu').innerHTML = outPut;
+                }
+            }
+            xhr.send();
+        }
+    </script>
+</body>
+</html>

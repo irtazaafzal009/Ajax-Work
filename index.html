@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Ajax Practice</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+
+<body>
+    <p id="para"></p>
+    <button id="button">Get Text Data</button>
+    <script>
+        document.getElementById('button').addEventListener('click',loadText);
+        function loadText(){
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET','sample.txt',true);
+            xhr.onload = function(){
+                if(this.status == 200){
+                    console.log(xhr.responseText)
+                    document.getElementById('para').innerHTML = this.responseText
+                }
+            }
+
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
